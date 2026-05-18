@@ -53,3 +53,9 @@
 - before: Runtime deployment and secret setup were only described inside the root goal, not in an operator-facing deployment document.
 - after: Added `docs/deployment.md` with runtime endpoints, required Cloudflare Worker secrets, optional/proposed variables, local development commands, and deployment notes that avoid committing real secret values.
 - verification: `rg` confirmed `docs/deployment.md` mentions all required endpoints, required secrets, and proposed optional vars; `npm test` passed with 17 tests.
+
+## 2026-05-18
+
+- before: The optional `MIN_LEVEL` runtime policy was documented as proposed and not implemented.
+- after: Added severity ranking and optional `MIN_LEVEL` filtering that skips lower-severity notifications before Telegram delivery, reports invalid `MIN_LEVEL` configuration, and updated deployment docs to mark `MIN_LEVEL` as supported.
+- verification: `npm test` passed with 20 tests covering health, auth, payload validation, formatting, Telegram delivery, admin test delivery, and `MIN_LEVEL` filtering.

@@ -7,10 +7,10 @@ READY
 ## Next Small Verifiable Task
 
 1. Read `docs/goal/root_goal.md`, this file, and the current code state.
-2. Implement `MIN_LEVEL` severity filtering as an optional runtime policy.
-3. Default behavior should continue delivering all valid levels when `MIN_LEVEL` is absent.
-4. When `MIN_LEVEL` is set, return a JSON skipped response for lower-severity notifications without calling Telegram.
-5. Add local tests for absent `MIN_LEVEL`, `MIN_LEVEL=warning`, and invalid `MIN_LEVEL` behavior.
+2. Implement a conservative secret redaction helper for notification text.
+3. Mask common sensitive key/value patterns before Telegram delivery.
+4. Ensure formatted Telegram messages never include full values for fields such as `api_key`, `token`, `private_key`, `seed_phrase`, or wallet-like addresses.
+5. Add local tests for redaction without changing normal non-sensitive messages.
 
 ## Notes
 

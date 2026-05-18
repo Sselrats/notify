@@ -36,9 +36,12 @@ The code expects:
 SERVICE_NAME = "notification-gateway"
 ```
 
-The design document also proposes these future variables:
+The code also supports:
 
-- `MIN_LEVEL`: PROPOSED. Severity filtering is not implemented yet.
+- `MIN_LEVEL`: Optional. One of `debug`, `info`, `success`, `warning`, or `critical`. When set, lower-severity notifications return a JSON skipped response and are not sent to Telegram.
+
+The design document also proposes this future variable:
+
 - `ENVIRONMENT`: PROPOSED. Environment-specific behavior is not implemented yet.
 
 ## Local Development
@@ -78,4 +81,3 @@ wrangler deploy
 ```
 
 Actual domain binding for `notify.mugeon.kim` is an infrastructure step and is not performed by this repository.
-

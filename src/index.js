@@ -1,6 +1,13 @@
 const SERVICE_NAME = 'notification-gateway';
 const VERSION = '1.0.0';
 const LEVELS = new Set(['debug', 'info', 'success', 'warning', 'critical']);
+const LEVEL_RANK = {
+  debug: 10,
+  info: 20,
+  success: 30,
+  warning: 40,
+  critical: 50,
+};
 
 function json(data, init = {}) {
   const headers = new Headers(init.headers);
@@ -90,6 +97,43 @@ function invalidPayload(errors) {
     },
     { status: 400 },
   );
+}
+
+function minLevelDecision(level, env) {
+  if (!env?.MIN_LEVEL) {
+    return {
+      ok: true,
+      shouldDeliver: true,
+    };
+  }
+
+  if (!LEVELS.has(env.MIN_LEVEL)) {
+    return {
+      ok: false,
+      response: json(
+        {
+          ok: false,
+          error: 'invalid_min_level',
+        },
+        { status: 500 },
+      ),
+    };
+  }
+
+  const shouldDeliver = LEVEL_RANK[level] >= LEVEL_RANK[env.MIN_LEVEL];
+
+  return {
+    ok: true,
+    shouldDeliver,
+  };
+}
+
+function skippedByMinLevel() {
+  return json({
+    ok: true,
+    skipped: true,
+    reason: 'below_min_level',
+  });
 }
 
 function nonEmptyString(value) {
@@ -198,6 +242,15 @@ export async function handleNotify(request, env) {
   const errors = validatePayload(parsed.value);
   if (errors.length > 0) {
     return invalidPayload(errors);
+  }
+
+  const levelDecision = minLevelDecision(parsed.value.level, env);
+  if (!levelDecision.ok) {
+    return levelDecision.response;
+  }
+
+  if (!levelDecision.shouldDeliver) {
+    return skippedByMinLevel();
   }
 
   const message = formatTelegramMessage(parsed.value);
