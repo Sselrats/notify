@@ -89,3 +89,9 @@
 - before: The active goal text referenced `docs/goals/root_goal.md`, while the user-requested canonical path was `docs/goal/root_goal.md`.
 - after: Added `docs/goals/root_goal.md` as a compatibility pointer to the canonical root goal document and recorded the canonical path in `docs/status.md`.
 - verification: Confirmed both `docs/goal/root_goal.md` and `docs/goals/root_goal.md` exist, the pointer references the canonical path, and `npm test` passed with 26 tests.
+
+## 2026-05-18
+
+- before: `next_goal.md` still requested a North Star completion audit.
+- after: Completed the audit, updated `next_goal.md` to `STOPPED`, and recorded that remaining work is limited to documented human-infrastructure `BLOCKED` items or future `PROPOSED` items.
+- verification: `npm test` passed with 26 tests; `rg` confirmed requirements map to code/tests/status docs; `git ls-files` found no tracked `.dev.vars` or `node_modules`; `git grep` found no real-looking Telegram/OpenAI/wallet secret patterns.

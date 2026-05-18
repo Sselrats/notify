@@ -2,18 +2,28 @@
 
 ## Status
 
-READY
+STOPPED
 
 ## Next Small Verifiable Task
 
-1. Read `docs/goal/root_goal.md`, this file, and the current code state.
-2. Run a North Star completion audit against `docs/goal/root_goal.md`, `docs/deployment.md`, `docs/status.md`, the current code, and tests.
-3. Verify `npm test` still passes.
-4. Verify no real secrets or `.dev.vars` files are tracked.
-5. If the audit finds only human-infrastructure BLOCKED items and documented PROPOSED items, stop with the required report; otherwise update this file with the next smallest implementation task and continue.
+No local implementation task remains before human-owned infrastructure setup.
+
+## Stop Reason
+
+North Star Completion Criteria is satisfied for the repository state:
+
+- MVP code is implemented.
+- Local verification passes.
+- Documentation and code status are aligned.
+- Remaining human-infrastructure tasks are recorded as `BLOCKED` in `docs/status.md`.
+- Future non-MVP ideas are recorded as `PROPOSED` in `docs/status.md`.
+
+## Human BLOCKED Actions
+
+- Configure real Cloudflare Worker secrets.
+- Bind/deploy the Worker to `notify.mugeon.kim`.
+- Verify live Telegram delivery with real Telegram bot/chat credentials.
 
 ## Notes
 
-- Keep tasks small and independently verifiable.
-- Update this file after every successful cycle.
-- Record before/after and verification results in `docs/goal/WORK_LOG.md`.
+- If new requirements are added to `docs/*.md`, replace this stopped state with the next smallest verifiable task and resume the loop.
