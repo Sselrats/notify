@@ -32,7 +32,7 @@ This document maps the Notification Gateway design requirements to the current r
 | Requirement | Status | Evidence |
 | --- | --- | --- |
 | `MIN_LEVEL` filtering | IMPLEMENTED | `src/index.js`, `test/min-level.test.js`, `docs/deployment.md` |
-| `SERVICE_NAME` | PARTIAL | `wrangler.toml` defines it; health response currently uses the fixed service name required by the design |
+| `SERVICE_NAME` | IMPLEMENTED | `wrangler.toml` defines it; `GET /health` uses the Worker var with a default fallback |
 | `ENVIRONMENT` | PROPOSED | No environment-specific behavior is implemented |
 
 ## MVP Exclusions
@@ -74,4 +74,4 @@ Current local verification:
 npm test
 ```
 
-Latest local result recorded in `docs/goal/WORK_LOG.md`: all 25 tests passed.
+Latest local result recorded in `docs/goal/WORK_LOG.md`: all 26 tests passed.

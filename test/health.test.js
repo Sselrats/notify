@@ -15,6 +15,19 @@ test('GET /health returns the documented health payload', async () => {
   });
 });
 
+test('GET /health can use SERVICE_NAME from Worker vars', async () => {
+  const response = await worker.fetch(new Request('https://notify.mugeon.kim/health'), {
+    SERVICE_NAME: 'custom-notify',
+  });
+
+  assert.equal(response.status, 200);
+  assert.deepEqual(await response.json(), {
+    ok: true,
+    service: 'custom-notify',
+    version: '1.0.0',
+  });
+});
+
 test('unknown routes return a JSON 404', async () => {
   const response = await worker.fetch(new Request('https://notify.mugeon.kim/telegram'));
 
@@ -24,4 +37,3 @@ test('unknown routes return a JSON 404', async () => {
     error: 'not_found',
   });
 });
-

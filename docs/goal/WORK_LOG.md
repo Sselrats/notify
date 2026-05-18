@@ -77,3 +77,9 @@
 - before: Optional payload `metadata` was accepted but not included in Telegram message formatting.
 - after: `formatTelegramMessage` appends non-empty metadata key/value lines and redacts the final message text before delivery.
 - verification: `npm test` passed with 25 tests covering health, auth, payload validation, formatting including metadata, redaction, Telegram delivery, admin test delivery, and `MIN_LEVEL` filtering.
+
+## 2026-05-18
+
+- before: `SERVICE_NAME` was defined in `wrangler.toml` but `GET /health` always returned the hardcoded default.
+- after: `GET /health` uses the Worker `SERVICE_NAME` var when present, with `notification-gateway` as the default fallback, and status docs now mark `SERVICE_NAME` implemented.
+- verification: `npm test` passed with 26 tests covering health including `SERVICE_NAME`, auth, payload validation, formatting including metadata, redaction, Telegram delivery, admin test delivery, and `MIN_LEVEL` filtering.

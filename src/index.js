@@ -19,10 +19,10 @@ function json(data, init = {}) {
   });
 }
 
-export function handleHealth() {
+export function handleHealth(env = {}) {
   return json({
     ok: true,
-    service: SERVICE_NAME,
+    service: env.SERVICE_NAME || SERVICE_NAME,
     version: VERSION,
   });
 }
@@ -310,7 +310,7 @@ export default {
     const url = new URL(request.url);
 
     if (request.method === 'GET' && url.pathname === '/health') {
-      return handleHealth();
+      return handleHealth(env);
     }
 
     if (request.method === 'POST' && url.pathname === '/v1/notify') {
