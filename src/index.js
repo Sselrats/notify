@@ -200,6 +200,20 @@ export function formatTelegramMessage(payload) {
     lines.push(`url: ${payload.url.trim()}`);
   }
 
+  if (payload.metadata && typeof payload.metadata === 'object' && !Array.isArray(payload.metadata)) {
+    const entries = Object.entries(payload.metadata)
+      .filter(([, value]) => value !== undefined && value !== null)
+      .map(([key, value]) => `${key}: ${typeof value === 'string' ? value : JSON.stringify(value)}`);
+
+    if (entries.length > 0) {
+      const previousLine = lines.at(-1);
+      if (previousLine !== '') {
+        lines.push('');
+      }
+      lines.push(...entries);
+    }
+  }
+
   return redactSensitiveText(lines.join('\n'));
 }
 

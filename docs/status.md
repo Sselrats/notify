@@ -13,6 +13,7 @@ This document maps the Notification Gateway design requirements to the current r
 | Required field validation | IMPLEMENTED | `source`, `level`, `title`, and `message` checks in `src/index.js` |
 | Level validation | IMPLEMENTED | `debug`, `info`, `success`, `warning`, and `critical` checks in `src/index.js` |
 | Telegram message formatting | IMPLEMENTED | `formatTelegramMessage` in `src/index.js`, `test/telegram-format.test.js` |
+| Optional `metadata` formatting | IMPLEMENTED | `formatTelegramMessage` appends metadata key/value lines; covered by `test/telegram-format.test.js` |
 | Telegram Bot API delivery | IMPLEMENTED | `deliverTelegram` in `src/index.js`, mocked tests in `test/telegram-delivery.test.js` and `test/notify-delivery.test.js` |
 | Success/failure JSON responses | IMPLEMENTED | Route, validation, config, delivery, and skip responses covered by tests |
 | `POST /admin/telegram/test` | IMPLEMENTED | `src/index.js`, `test/admin-telegram-test.test.js` |
@@ -73,5 +74,4 @@ Current local verification:
 npm test
 ```
 
-Latest local result recorded in `docs/goal/WORK_LOG.md`: all 24 tests passed.
-
+Latest local result recorded in `docs/goal/WORK_LOG.md`: all 25 tests passed.

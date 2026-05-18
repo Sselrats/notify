@@ -50,3 +50,30 @@ test('formatTelegramMessage includes AgentForge-style optional fields', () => {
   );
 });
 
+test('formatTelegramMessage includes metadata fields as structured lines', () => {
+  assert.equal(
+    formatTelegramMessage({
+      source: 'distill',
+      level: 'success',
+      title: '오늘 브리핑 생성 완료',
+      message: 'daily brief generated',
+      metadata: {
+        articles_collected: 143,
+        clusters: 21,
+        selected_briefs: 5,
+        send_time: '07:30',
+      },
+    }),
+    [
+      '[distill] SUCCESS',
+      '오늘 브리핑 생성 완료',
+      '',
+      'daily brief generated',
+      '',
+      'articles_collected: 143',
+      'clusters: 21',
+      'selected_briefs: 5',
+      'send_time: 07:30',
+    ].join('\n'),
+  );
+});

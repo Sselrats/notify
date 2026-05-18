@@ -71,3 +71,9 @@
 - before: There was no requirement-to-artifact status document showing implemented, verified, blocked, and proposed items.
 - after: Added `docs/status.md` mapping MVP, security, optional policy, blocked infrastructure, and proposed future work to concrete code/test/document evidence.
 - verification: `npm test` passed with 24 tests; `git ls-files` found no tracked `.dev.vars` or `node_modules`; `git grep` found no real-looking Telegram/OpenAI/wallet secret patterns; `rg` confirmed `docs/status.md` contains implemented, blocked, proposed, and verification entries.
+
+## 2026-05-18
+
+- before: Optional payload `metadata` was accepted but not included in Telegram message formatting.
+- after: `formatTelegramMessage` appends non-empty metadata key/value lines and redacts the final message text before delivery.
+- verification: `npm test` passed with 25 tests covering health, auth, payload validation, formatting including metadata, redaction, Telegram delivery, admin test delivery, and `MIN_LEVEL` filtering.
