@@ -140,6 +140,25 @@ function nonEmptyString(value) {
   return typeof value === 'string' && value.trim() !== '';
 }
 
+function maskValue(value) {
+  const trimmed = value.trim();
+  if (trimmed.length <= 8) {
+    return '***';
+  }
+
+  return `${trimmed.slice(0, 4)}...${trimmed.slice(-4)}`;
+}
+
+export function redactSensitiveText(text) {
+  return text
+    .replace(
+      /\b(api[_-]?key|token|private[_-]?key|seed[_-]?phrase|session[_-]?cookie|oauth[_-]?refresh[_-]?token)\b(\s*[:=]\s*)([^\n]+)/gi,
+      (_match, key, separator, value) => `${key}${separator}${maskValue(value)}`,
+    )
+    .replace(/\b0x[a-fA-F0-9]{8,}\b/g, (value) => maskValue(value))
+    .replace(/\b([A-Z0-9._%+-])([A-Z0-9._%+-]*)(@[A-Z0-9.-]+\.[A-Z]{2,})\b/gi, (_match, first, _middle, domain) => `${first}***${domain}`);
+}
+
 export function formatTelegramMessage(payload) {
   const lines = [
     `[${payload.source.trim()}] ${payload.level.trim().toUpperCase()}`,
@@ -181,7 +200,7 @@ export function formatTelegramMessage(payload) {
     lines.push(`url: ${payload.url.trim()}`);
   }
 
-  return lines.join('\n');
+  return redactSensitiveText(lines.join('\n'));
 }
 
 export async function deliverTelegram(message, env, fetchImpl = globalThis.fetch) {

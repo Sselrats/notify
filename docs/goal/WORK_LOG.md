@@ -59,3 +59,9 @@
 - before: The optional `MIN_LEVEL` runtime policy was documented as proposed and not implemented.
 - after: Added severity ranking and optional `MIN_LEVEL` filtering that skips lower-severity notifications before Telegram delivery, reports invalid `MIN_LEVEL` configuration, and updated deployment docs to mark `MIN_LEVEL` as supported.
 - verification: `npm test` passed with 20 tests covering health, auth, payload validation, formatting, Telegram delivery, admin test delivery, and `MIN_LEVEL` filtering.
+
+## 2026-05-18
+
+- before: Telegram message formatting did not redact sensitive values mentioned in the security rules.
+- after: Added `redactSensitiveText`, applied it to formatted Telegram messages, and added tests for normal text preservation, sensitive key/value masking, wallet-like address masking, email masking, and formatted message redaction.
+- verification: `npm test` passed with 24 tests covering health, auth, payload validation, formatting, redaction, Telegram delivery, admin test delivery, and `MIN_LEVEL` filtering.
