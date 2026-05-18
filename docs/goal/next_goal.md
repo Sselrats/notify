@@ -7,10 +7,10 @@ READY
 ## Next Small Verifiable Task
 
 1. Read `docs/goal/root_goal.md`, this file, and the current code state.
-2. Add a machine-readable MVP status document that maps each documented MVP requirement to implemented, verified, blocked, or proposed status.
-3. Record that real Cloudflare domain binding, Worker secret creation, and live Telegram delivery require human-owned infrastructure credentials and are not executed locally.
-4. Include the current verification command and latest passing test coverage summary.
-5. Run a local audit command to confirm no `TELEGRAM_BOT_TOKEN` or `.dev.vars` secret values are committed.
+2. Run a North Star completion audit against `docs/goal/root_goal.md`, `docs/deployment.md`, `docs/status.md`, the current code, and tests.
+3. Verify `npm test` still passes.
+4. Verify no real secrets or `.dev.vars` files are tracked.
+5. If the audit finds only human-infrastructure BLOCKED items and documented PROPOSED items, stop with the required report; otherwise update this file with the next smallest implementation task and continue.
 
 ## Notes
 

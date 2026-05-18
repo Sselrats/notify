@@ -65,3 +65,9 @@
 - before: Telegram message formatting did not redact sensitive values mentioned in the security rules.
 - after: Added `redactSensitiveText`, applied it to formatted Telegram messages, and added tests for normal text preservation, sensitive key/value masking, wallet-like address masking, email masking, and formatted message redaction.
 - verification: `npm test` passed with 24 tests covering health, auth, payload validation, formatting, redaction, Telegram delivery, admin test delivery, and `MIN_LEVEL` filtering.
+
+## 2026-05-18
+
+- before: There was no requirement-to-artifact status document showing implemented, verified, blocked, and proposed items.
+- after: Added `docs/status.md` mapping MVP, security, optional policy, blocked infrastructure, and proposed future work to concrete code/test/document evidence.
+- verification: `npm test` passed with 24 tests; `git ls-files` found no tracked `.dev.vars` or `node_modules`; `git grep` found no real-looking Telegram/OpenAI/wallet secret patterns; `rg` confirmed `docs/status.md` contains implemented, blocked, proposed, and verification entries.
