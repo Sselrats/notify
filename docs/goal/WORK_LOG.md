@@ -95,3 +95,9 @@
 - before: `next_goal.md` still requested a North Star completion audit.
 - after: Completed the audit, updated `next_goal.md` to `STOPPED`, and recorded that remaining work is limited to documented human-infrastructure `BLOCKED` items or future `PROPOSED` items.
 - verification: `npm test` passed with 26 tests; `rg` confirmed requirements map to code/tests/status docs; `git ls-files` found no tracked `.dev.vars` or `node_modules`; `git grep` found no real-looking Telegram/OpenAI/wallet secret patterns.
+
+## 2026-05-18
+
+- before: `notify.mugeon.kim` was not persisted in `wrangler.toml` and deployment docs still described custom domain binding as not performed.
+- after: Added `notify.mugeon.kim` as the Worker custom domain route, disabled workers.dev/preview URLs in config, deployed the Worker, and updated deployment/status docs.
+- verification: `npx wrangler deploy` succeeded with `notify.mugeon.kim (custom domain)`; `curl --resolve notify.mugeon.kim:443:104.21.54.16 https://notify.mugeon.kim/health` returned `200` with the documented health JSON; unauthenticated `POST /v1/notify` returned documented `401`.

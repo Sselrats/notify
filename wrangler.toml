@@ -1,7 +1,11 @@
 name = "notification-gateway"
 main = "src/index.js"
 compatibility_date = "2026-05-18"
+workers_dev = false
+preview_urls = false
+routes = [
+  { pattern = "notify.mugeon.kim", custom_domain = true }
+]
 
 [vars]
 SERVICE_NAME = "notification-gateway"
-

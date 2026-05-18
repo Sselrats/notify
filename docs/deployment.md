@@ -80,4 +80,12 @@ Deploy only after Cloudflare account, domain routing, and Worker secrets are con
 wrangler deploy
 ```
 
-Actual domain binding for `notify.mugeon.kim` is an infrastructure step and is not performed by this repository.
+The Worker is configured for the `notify.mugeon.kim` custom domain in `wrangler.toml`.
+
+After deployment, verify:
+
+```sh
+curl https://notify.mugeon.kim/health
+```
+
+DNS propagation or local resolver caches may take a few minutes after the custom domain is first attached.

@@ -51,10 +51,9 @@ These are intentionally not implemented in the MVP design:
 
 ## BLOCKED
 
-- Live Cloudflare Worker deployment requires human-owned Cloudflare account access.
-- `notify.mugeon.kim` DNS/domain binding requires human-owned Cloudflare/domain access.
-- Real `NOTIFY_API_KEY`, `TELEGRAM_BOT_TOKEN`, and `TELEGRAM_CHAT_ID` secret creation requires human input.
-- Live Telegram delivery verification requires real Telegram bot/chat credentials.
+- Live authenticated `/v1/notify` or `/admin/telegram/test` verification requires the user-held `NOTIFY_API_KEY`.
+- Live Telegram delivery verification requires real Telegram bot/chat credentials and a reachable configured chat.
+- Future Cloudflare/DNS changes require human-owned Cloudflare/domain access.
 
 ## PROPOSED
 
