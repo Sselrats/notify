@@ -83,3 +83,9 @@
 - before: `SERVICE_NAME` was defined in `wrangler.toml` but `GET /health` always returned the hardcoded default.
 - after: `GET /health` uses the Worker `SERVICE_NAME` var when present, with `notification-gateway` as the default fallback, and status docs now mark `SERVICE_NAME` implemented.
 - verification: `npm test` passed with 26 tests covering health including `SERVICE_NAME`, auth, payload validation, formatting including metadata, redaction, Telegram delivery, admin test delivery, and `MIN_LEVEL` filtering.
+
+## 2026-05-18
+
+- before: The active goal text referenced `docs/goals/root_goal.md`, while the user-requested canonical path was `docs/goal/root_goal.md`.
+- after: Added `docs/goals/root_goal.md` as a compatibility pointer to the canonical root goal document and recorded the canonical path in `docs/status.md`.
+- verification: Confirmed both `docs/goal/root_goal.md` and `docs/goals/root_goal.md` exist, the pointer references the canonical path, and `npm test` passed with 26 tests.

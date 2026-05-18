@@ -2,6 +2,8 @@
 
 This document maps the Notification Gateway design requirements to the current repository state.
 
+The canonical goal document is `docs/goal/root_goal.md`. `docs/goals/root_goal.md` is a compatibility pointer for goal runners that use the plural path.
+
 ## MVP Requirements
 
 | Requirement | Status | Evidence |
