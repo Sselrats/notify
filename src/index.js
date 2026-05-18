@@ -140,6 +140,51 @@ export function formatTelegramMessage(payload) {
   return lines.join('\n');
 }
 
+export async function deliverTelegram(message, env, fetchImpl = globalThis.fetch) {
+  if (!env?.TELEGRAM_BOT_TOKEN || !env?.TELEGRAM_CHAT_ID) {
+    return json(
+      {
+        ok: false,
+        error: 'telegram_not_configured',
+      },
+      { status: 500 },
+    );
+  }
+
+  const response = await fetchImpl(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      chat_id: env.TELEGRAM_CHAT_ID,
+      text: message,
+    }),
+  });
+
+  let result = null;
+  try {
+    result = await response.json();
+  } catch {
+    // Telegram normally returns JSON, but status still determines failure here.
+  }
+
+  if (!response.ok || result?.ok === false) {
+    return json(
+      {
+        ok: false,
+        error: 'telegram_delivery_failed',
+      },
+      { status: 502 },
+    );
+  }
+
+  return json({
+    ok: true,
+    channel: 'telegram',
+  });
+}
+
 export async function handleNotify(request, env) {
   if (!isAuthorized(request, env)) {
     return unauthorized();
@@ -155,15 +200,8 @@ export async function handleNotify(request, env) {
     return invalidPayload(errors);
   }
 
-  formatTelegramMessage(parsed.value);
-
-  return json(
-    {
-      ok: false,
-      error: 'not_implemented',
-    },
-    { status: 501 },
-  );
+  const message = formatTelegramMessage(parsed.value);
+  return deliverTelegram(message, env);
 }
 
 export default {

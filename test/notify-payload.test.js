@@ -64,7 +64,7 @@ test('POST /v1/notify rejects invalid levels', async () => {
   });
 });
 
-test('POST /v1/notify accepts a minimally valid payload before delivery is implemented', async () => {
+test('POST /v1/notify accepts a minimally valid payload before Telegram config validation', async () => {
   const response = await worker.fetch(
     notifyRequest(
       JSON.stringify({
@@ -77,10 +77,9 @@ test('POST /v1/notify accepts a minimally valid payload before delivery is imple
     env,
   );
 
-  assert.equal(response.status, 501);
+  assert.equal(response.status, 500);
   assert.deepEqual(await response.json(), {
     ok: false,
-    error: 'not_implemented',
+    error: 'telegram_not_configured',
   });
 });
-

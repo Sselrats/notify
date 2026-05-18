@@ -7,10 +7,10 @@ READY
 ## Next Small Verifiable Task
 
 1. Read `docs/goal/root_goal.md`, this file, and the current code state.
-2. Implement Telegram Bot API delivery for validated `POST /v1/notify` payloads using `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID`.
-3. Return a JSON success response when Telegram accepts the message.
-4. Return a JSON failure response when Telegram rejects or the required Telegram secrets are missing.
-5. Add local tests with mocked `fetch` so no real Telegram call is made.
+2. Implement `POST /admin/telegram/test` as an admin/debug-only Telegram connectivity endpoint.
+3. Require the same Bearer authentication as `/v1/notify`.
+4. Send a deterministic test message through the Telegram delivery helper.
+5. Add local tests for unauthorized and mocked successful admin test delivery.
 
 ## Notes
 

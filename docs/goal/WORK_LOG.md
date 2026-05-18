@@ -35,3 +35,9 @@
 - before: Validated notification payloads had no Telegram message formatter.
 - after: Added `formatTelegramMessage` with the documented base shape, uppercase levels, optional `project`, `event`, `tags`, and `url`, and unit tests for the basic and AgentForge-style formats.
 - verification: `npm test` passed with 11 tests covering health, auth, payload validation, and Telegram message formatting.
+
+## 2026-05-18
+
+- before: Valid notifications stopped before Telegram delivery and returned `not_implemented`.
+- after: Added Telegram Bot API delivery using `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID`, JSON success responses, JSON errors for missing config or Telegram rejection, and mocked delivery tests for the helper and `/v1/notify`.
+- verification: `npm test` passed with 15 tests covering health, auth, payload validation, formatting, Telegram delivery helper behavior, and mocked `/v1/notify` delivery.
