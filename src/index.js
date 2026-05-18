@@ -1,5 +1,6 @@
 const SERVICE_NAME = 'notification-gateway';
 const VERSION = '1.0.0';
+const LEVELS = new Set(['debug', 'info', 'success', 'warning', 'critical']);
 
 function json(data, init = {}) {
   const headers = new Headers(init.headers);
@@ -40,9 +41,70 @@ export function unauthorized() {
   );
 }
 
-export function handleNotify(request, env) {
+async function parseJson(request) {
+  try {
+    return {
+      ok: true,
+      value: await request.json(),
+    };
+  } catch {
+    return {
+      ok: false,
+      response: json(
+        {
+          ok: false,
+          error: 'invalid_json',
+        },
+        { status: 400 },
+      ),
+    };
+  }
+}
+
+function validatePayload(payload) {
+  const errors = [];
+
+  if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
+    return ['payload must be a JSON object'];
+  }
+
+  for (const field of ['source', 'level', 'title', 'message']) {
+    if (typeof payload[field] !== 'string' || payload[field].trim() === '') {
+      errors.push(`${field} is required`);
+    }
+  }
+
+  if (typeof payload.level === 'string' && !LEVELS.has(payload.level)) {
+    errors.push('level is invalid');
+  }
+
+  return errors;
+}
+
+function invalidPayload(errors) {
+  return json(
+    {
+      ok: false,
+      error: 'invalid_payload',
+      details: errors,
+    },
+    { status: 400 },
+  );
+}
+
+export async function handleNotify(request, env) {
   if (!isAuthorized(request, env)) {
     return unauthorized();
+  }
+
+  const parsed = await parseJson(request);
+  if (!parsed.ok) {
+    return parsed.response;
+  }
+
+  const errors = validatePayload(parsed.value);
+  if (errors.length > 0) {
+    return invalidPayload(errors);
   }
 
   return json(

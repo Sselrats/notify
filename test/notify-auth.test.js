@@ -38,7 +38,7 @@ test('POST /v1/notify rejects requests with an invalid bearer token', async () =
   });
 });
 
-test('POST /v1/notify accepts the configured bearer token before later validation', async () => {
+test('POST /v1/notify accepts the configured bearer token before payload validation', async () => {
   const response = await worker.fetch(
     new Request('https://notify.mugeon.kim/v1/notify', {
       method: 'POST',
@@ -49,10 +49,9 @@ test('POST /v1/notify accepts the configured bearer token before later validatio
     env,
   );
 
-  assert.equal(response.status, 501);
+  assert.equal(response.status, 400);
   assert.deepEqual(await response.json(), {
     ok: false,
-    error: 'not_implemented',
+    error: 'invalid_json',
   });
 });
-

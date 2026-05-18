@@ -23,3 +23,9 @@
 - before: `POST /v1/notify` was not routed and had no Bearer token authentication.
 - after: Added the `POST /v1/notify` route, `Authorization: Bearer <NOTIFY_API_KEY>` checking, documented `401` JSON responses, and an explicit `501 not_implemented` response after successful auth until payload handling is implemented.
 - verification: `npm test` passed with 5 tests covering health, 404 handling, and `/v1/notify` auth success/failure paths.
+
+## 2026-05-18
+
+- before: Authenticated `POST /v1/notify` requests did not parse JSON or validate the standard payload schema.
+- after: Added JSON parsing, required field checks for `source`, `level`, `title`, and `message`, allowed level validation, JSON `400` errors for malformed/invalid payloads, and tests for invalid and minimally valid payloads.
+- verification: `npm test` passed with 9 tests covering health, auth, JSON parsing, required fields, allowed levels, and minimally valid payload handling.

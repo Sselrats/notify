@@ -7,10 +7,10 @@ READY
 ## Next Small Verifiable Task
 
 1. Read `docs/goal/root_goal.md`, this file, and the current code state.
-2. Implement JSON body parsing for authenticated `POST /v1/notify` requests.
-3. Validate the required payload fields: `source`, `level`, `title`, and `message`.
-4. Return JSON validation errors for malformed JSON or missing/invalid required fields.
-5. Add local tests for malformed JSON, missing fields, and a minimally valid payload.
+2. Implement Telegram message formatting for a validated notification payload.
+3. Include `source`, uppercased `level`, `title`, `message`, and optional `project`, `event`, `tags`, and `url` in the text.
+4. Keep formatting testable without calling Telegram.
+5. Add local tests for the basic format and the AgentForge-style optional fields.
 
 ## Notes
 
