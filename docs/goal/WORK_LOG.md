@@ -41,3 +41,9 @@
 - before: Valid notifications stopped before Telegram delivery and returned `not_implemented`.
 - after: Added Telegram Bot API delivery using `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID`, JSON success responses, JSON errors for missing config or Telegram rejection, and mocked delivery tests for the helper and `/v1/notify`.
 - verification: `npm test` passed with 15 tests covering health, auth, payload validation, formatting, Telegram delivery helper behavior, and mocked `/v1/notify` delivery.
+
+## 2026-05-18
+
+- before: The documented `POST /admin/telegram/test` debug endpoint was not implemented.
+- after: Added `POST /admin/telegram/test` with the same Bearer auth as `/v1/notify`, deterministic Telegram test message delivery, and tests for unauthorized and mocked successful delivery.
+- verification: `npm test` passed with 17 tests covering health, auth, payload validation, formatting, Telegram delivery, `/v1/notify`, and `/admin/telegram/test`.

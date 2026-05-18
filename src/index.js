@@ -204,6 +204,21 @@ export async function handleNotify(request, env) {
   return deliverTelegram(message, env);
 }
 
+export function handleTelegramTest(request, env) {
+  if (!isAuthorized(request, env)) {
+    return unauthorized();
+  }
+
+  const message = [
+    '[notification-gateway] INFO',
+    'Telegram test',
+    '',
+    'message: Notification Gateway Telegram connectivity test.',
+  ].join('\n');
+
+  return deliverTelegram(message, env);
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -214,6 +229,10 @@ export default {
 
     if (request.method === 'POST' && url.pathname === '/v1/notify') {
       return handleNotify(request, env);
+    }
+
+    if (request.method === 'POST' && url.pathname === '/admin/telegram/test') {
+      return handleTelegramTest(request, env);
     }
 
     return json(

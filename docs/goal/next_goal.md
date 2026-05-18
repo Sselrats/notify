@@ -7,10 +7,10 @@ READY
 ## Next Small Verifiable Task
 
 1. Read `docs/goal/root_goal.md`, this file, and the current code state.
-2. Implement `POST /admin/telegram/test` as an admin/debug-only Telegram connectivity endpoint.
-3. Require the same Bearer authentication as `/v1/notify`.
-4. Send a deterministic test message through the Telegram delivery helper.
-5. Add local tests for unauthorized and mocked successful admin test delivery.
+2. Add deployment and secret setup documentation for the Cloudflare Worker.
+3. Document required secrets: `NOTIFY_API_KEY`, `TELEGRAM_BOT_TOKEN`, and `TELEGRAM_CHAT_ID`.
+4. Document optional vars: `MIN_LEVEL`, `SERVICE_NAME`, and `ENVIRONMENT` as proposed/not-yet-implemented where applicable.
+5. Add a local verification command to confirm docs mention all required runtime settings.
 
 ## Notes
 
