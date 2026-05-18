@@ -47,3 +47,9 @@
 - before: The documented `POST /admin/telegram/test` debug endpoint was not implemented.
 - after: Added `POST /admin/telegram/test` with the same Bearer auth as `/v1/notify`, deterministic Telegram test message delivery, and tests for unauthorized and mocked successful delivery.
 - verification: `npm test` passed with 17 tests covering health, auth, payload validation, formatting, Telegram delivery, `/v1/notify`, and `/admin/telegram/test`.
+
+## 2026-05-18
+
+- before: Runtime deployment and secret setup were only described inside the root goal, not in an operator-facing deployment document.
+- after: Added `docs/deployment.md` with runtime endpoints, required Cloudflare Worker secrets, optional/proposed variables, local development commands, and deployment notes that avoid committing real secret values.
+- verification: `rg` confirmed `docs/deployment.md` mentions all required endpoints, required secrets, and proposed optional vars; `npm test` passed with 17 tests.
