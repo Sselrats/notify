@@ -92,6 +92,54 @@ function invalidPayload(errors) {
   );
 }
 
+function nonEmptyString(value) {
+  return typeof value === 'string' && value.trim() !== '';
+}
+
+export function formatTelegramMessage(payload) {
+  const lines = [
+    `[${payload.source.trim()}] ${payload.level.trim().toUpperCase()}`,
+    payload.title.trim(),
+    '',
+  ];
+
+  const hasContext = nonEmptyString(payload.project) || nonEmptyString(payload.event);
+
+  if (nonEmptyString(payload.project)) {
+    lines.push(`project: ${payload.project.trim()}`);
+  }
+
+  if (nonEmptyString(payload.event)) {
+    lines.push(`event: ${payload.event.trim()}`);
+  }
+
+  if (hasContext) {
+    lines.push(`message: ${payload.message.trim()}`);
+  } else {
+    lines.push(payload.message.trim());
+  }
+
+  if (Array.isArray(payload.tags)) {
+    const tags = payload.tags
+      .filter(nonEmptyString)
+      .map((tag) => tag.trim());
+
+    if (tags.length > 0) {
+      lines.push('', `tags: ${tags.join(', ')}`);
+    }
+  }
+
+  if (nonEmptyString(payload.url)) {
+    const previousLine = lines.at(-1);
+    if (previousLine !== '') {
+      lines.push('');
+    }
+    lines.push(`url: ${payload.url.trim()}`);
+  }
+
+  return lines.join('\n');
+}
+
 export async function handleNotify(request, env) {
   if (!isAuthorized(request, env)) {
     return unauthorized();
@@ -106,6 +154,8 @@ export async function handleNotify(request, env) {
   if (errors.length > 0) {
     return invalidPayload(errors);
   }
+
+  formatTelegramMessage(parsed.value);
 
   return json(
     {

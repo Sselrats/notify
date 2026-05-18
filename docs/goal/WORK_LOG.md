@@ -29,3 +29,9 @@
 - before: Authenticated `POST /v1/notify` requests did not parse JSON or validate the standard payload schema.
 - after: Added JSON parsing, required field checks for `source`, `level`, `title`, and `message`, allowed level validation, JSON `400` errors for malformed/invalid payloads, and tests for invalid and minimally valid payloads.
 - verification: `npm test` passed with 9 tests covering health, auth, JSON parsing, required fields, allowed levels, and minimally valid payload handling.
+
+## 2026-05-18
+
+- before: Validated notification payloads had no Telegram message formatter.
+- after: Added `formatTelegramMessage` with the documented base shape, uppercase levels, optional `project`, `event`, `tags`, and `url`, and unit tests for the basic and AgentForge-style formats.
+- verification: `npm test` passed with 11 tests covering health, auth, payload validation, and Telegram message formatting.
