@@ -26,6 +26,7 @@ The canonical goal document is `docs/goal/root_goal.md`. `docs/goals/root_goal.m
 | --- | --- | --- |
 | Telegram Bot Token is held only by the gateway | IMPLEMENTED IN CODE / BLOCKED IN INFRA | Code reads `TELEGRAM_BOT_TOKEN` only from Worker env; real Cloudflare secret setup requires human credentials |
 | Projects use only `NOTIFY_ENDPOINT` and `NOTIFY_API_KEY` | DOCUMENTED | `docs/deployment.md`; client library/package is not part of this repository |
+| External project integration guide | IMPLEMENTED | `README.md` and `docs/api.md` document endpoint, env vars, schemas, examples, responses, and security rules |
 | Do not commit real secrets | VERIFIED LOCALLY | Secret placeholders only; `.dev.vars` is ignored by `.gitignore` |
 | Mask sensitive notification text | IMPLEMENTED | `redactSensitiveText` in `src/index.js`, `test/redaction.test.js` |
 

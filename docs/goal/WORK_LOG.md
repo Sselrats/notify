@@ -101,3 +101,9 @@
 - before: `notify.mugeon.kim` was not persisted in `wrangler.toml` and deployment docs still described custom domain binding as not performed.
 - after: Added `notify.mugeon.kim` as the Worker custom domain route, disabled workers.dev/preview URLs in config, deployed the Worker, and updated deployment/status docs.
 - verification: `npx wrangler deploy` succeeded with `notify.mugeon.kim (custom domain)`; `curl --resolve notify.mugeon.kim:443:104.21.54.16 https://notify.mugeon.kim/health` returned `200` with the documented health JSON; unauthenticated `POST /v1/notify` returned documented `401`.
+
+## 2026-05-18
+
+- before: Documentation was focused on design, deployment, and implementation status, but external projects had no concise integration guide.
+- after: Added `README.md` and `docs/api.md` with production endpoint, required env vars, payload schema, curl/JavaScript/Python examples, response shapes, level policy, security rules, and admin test guidance.
+- verification: `rg` confirmed `README.md` and `docs/api.md` include endpoint, auth, env vars, examples, response shapes, security rules, and admin test guidance; `npm test` passed with 26 tests.
