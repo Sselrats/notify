@@ -7,9 +7,10 @@ READY
 ## Next Small Verifiable Task
 
 1. Read `docs/goal/root_goal.md`, this file, and the current code state.
-2. Implement `POST /v1/notify` request authentication using `Authorization: Bearer <NOTIFY_API_KEY>`.
-3. Return the documented `401` JSON response for missing or invalid tokens.
-4. Add local tests for authenticated and unauthenticated notification requests.
+2. Implement JSON body parsing for authenticated `POST /v1/notify` requests.
+3. Validate the required payload fields: `source`, `level`, `title`, and `message`.
+4. Return JSON validation errors for malformed JSON or missing/invalid required fields.
+5. Add local tests for malformed JSON, missing fields, and a minimally valid payload.
 
 ## Notes
 
