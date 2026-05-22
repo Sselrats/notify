@@ -79,6 +79,7 @@ Recommended payload:
   "message": "distill project build failed after retry.",
   "tags": ["build", "worker", "human_review_required"],
   "url": "https://github.com/...",
+  "image_url": "https://example.com/chart.png",
   "metadata": {
     "attempt": 2,
     "max_retries": 1,
@@ -99,7 +100,10 @@ Recommended payload:
 | `event` | no | string | Machine-readable event name |
 | `tags` | no | string[] | Search/classification tags |
 | `url` | no | string | Related PR, dashboard, log, report, or run URL |
+| `image_url` | no | string | HTTP or HTTPS image URL to deliver as a Telegram photo |
 | `metadata` | no | object | Extra structured values appended as key/value lines |
+
+When `image_url` is present, the gateway sends a Telegram photo with the formatted notification text as the caption. Telegram photo captions are limited to 1024 characters, so longer formatted messages are truncated in the caption.
 
 ## Level Policy
 
@@ -152,6 +156,21 @@ curl -X POST "$NOTIFY_ENDPOINT" \
       "attempt": 2,
       "max_retries": 1
     }
+  }'
+```
+
+Image notification:
+
+```sh
+curl -X POST "$NOTIFY_ENDPOINT" \
+  -H "Authorization: Bearer $NOTIFY_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "source": "distill",
+    "level": "warning",
+    "title": "Daily chart threshold warning",
+    "message": "selected_briefs=2, minimum_required=3",
+    "image_url": "https://example.com/chart.png"
   }'
 ```
 
@@ -224,6 +243,16 @@ Success:
 {
   "ok": true,
   "channel": "telegram"
+}
+```
+
+Image success:
+
+```json
+{
+  "ok": true,
+  "channel": "telegram",
+  "media": "photo"
 }
 ```
 
@@ -321,4 +350,3 @@ curl -X POST https://notify.mugeon.kim/admin/telegram/test \
 ```
 
 Production projects should not call this endpoint.
-

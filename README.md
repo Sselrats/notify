@@ -39,5 +39,6 @@ curl -X POST "$NOTIFY_ENDPOINT" \
   }'
 ```
 
-Full integration docs: [docs/api.md](docs/api.md)
+To include an image, add an HTTP(S) `image_url` field to the same payload. Existing text-only calls do not need to change.
 
+Full integration docs: [docs/api.md](docs/api.md)

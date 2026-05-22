@@ -1,6 +1,7 @@
 const SERVICE_NAME = 'notification-gateway';
 const VERSION = '1.0.0';
 const LEVELS = new Set(['debug', 'info', 'success', 'warning', 'critical']);
+const TELEGRAM_PHOTO_CAPTION_LIMIT = 1024;
 const LEVEL_RANK = {
   debug: 10,
   info: 20,
@@ -85,6 +86,10 @@ function validatePayload(payload) {
     errors.push('level is invalid');
   }
 
+  if (payload.image_url !== undefined && !isHttpUrl(payload.image_url)) {
+    errors.push('image_url must be an http or https URL');
+  }
+
   return errors;
 }
 
@@ -138,6 +143,29 @@ function skippedByMinLevel() {
 
 function nonEmptyString(value) {
   return typeof value === 'string' && value.trim() !== '';
+}
+
+function isHttpUrl(value) {
+  if (!nonEmptyString(value)) {
+    return false;
+  }
+
+  try {
+    const url = new URL(value.trim());
+    return url.protocol === 'http:' || url.protocol === 'https:';
+  } catch {
+    return false;
+  }
+}
+
+function truncateTelegramCaption(text) {
+  const characters = Array.from(text);
+
+  if (characters.length <= TELEGRAM_PHOTO_CAPTION_LIMIT) {
+    return text;
+  }
+
+  return `${characters.slice(0, TELEGRAM_PHOTO_CAPTION_LIMIT - 3).join('')}...`;
 }
 
 function maskValue(value) {
@@ -217,7 +245,7 @@ export function formatTelegramMessage(payload) {
   return redactSensitiveText(lines.join('\n'));
 }
 
-export async function deliverTelegram(message, env, fetchImpl = globalThis.fetch) {
+export async function deliverTelegram(message, env, fetchImpl = globalThis.fetch, options = {}) {
   if (!env?.TELEGRAM_BOT_TOKEN || !env?.TELEGRAM_CHAT_ID) {
     return json(
       {
@@ -228,15 +256,25 @@ export async function deliverTelegram(message, env, fetchImpl = globalThis.fetch
     );
   }
 
-  const response = await fetchImpl(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+  const imageUrl = nonEmptyString(options.imageUrl) ? options.imageUrl.trim() : null;
+  const method = imageUrl ? 'sendPhoto' : 'sendMessage';
+  const body = imageUrl
+    ? {
+        chat_id: env.TELEGRAM_CHAT_ID,
+        photo: imageUrl,
+        caption: truncateTelegramCaption(message),
+      }
+    : {
+        chat_id: env.TELEGRAM_CHAT_ID,
+        text: message,
+      };
+
+  const response = await fetchImpl(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/${method}`, {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
     },
-    body: JSON.stringify({
-      chat_id: env.TELEGRAM_CHAT_ID,
-      text: message,
-    }),
+    body: JSON.stringify(body),
   });
 
   let result = null;
@@ -256,10 +294,16 @@ export async function deliverTelegram(message, env, fetchImpl = globalThis.fetch
     );
   }
 
-  return json({
+  const resultBody = {
     ok: true,
     channel: 'telegram',
-  });
+  };
+
+  if (imageUrl) {
+    resultBody.media = 'photo';
+  }
+
+  return json(resultBody);
 }
 
 export async function handleNotify(request, env) {
@@ -287,7 +331,9 @@ export async function handleNotify(request, env) {
   }
 
   const message = formatTelegramMessage(parsed.value);
-  return deliverTelegram(message, env);
+  return deliverTelegram(message, env, globalThis.fetch, {
+    imageUrl: parsed.value.image_url,
+  });
 }
 
 export function handleTelegramTest(request, env) {

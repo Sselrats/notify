@@ -64,6 +64,28 @@ test('POST /v1/notify rejects invalid levels', async () => {
   });
 });
 
+test('POST /v1/notify rejects invalid image URLs', async () => {
+  const response = await worker.fetch(
+    notifyRequest(
+      JSON.stringify({
+        source: 'distill',
+        level: 'warning',
+        title: 'Cluster count low',
+        message: 'selected_briefs=2, minimum_required=3',
+        image_url: 'file:///tmp/chart.png',
+      }),
+    ),
+    env,
+  );
+
+  assert.equal(response.status, 400);
+  assert.deepEqual(await response.json(), {
+    ok: false,
+    error: 'invalid_payload',
+    details: ['image_url must be an http or https URL'],
+  });
+});
+
 test('POST /v1/notify accepts a minimally valid payload before Telegram config validation', async () => {
   const response = await worker.fetch(
     notifyRequest(
